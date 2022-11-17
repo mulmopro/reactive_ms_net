@@ -13,7 +13,7 @@ The following illustration shows how the information flows through the individua
 MSNet has been trained on a dataset of CFD simulations (right).
 
 <p align="center">
-<img src="./images/MSNET_workflow.png" width="750px"></img>
+<img src="./images/MSNET_workflow.jpg" width="750px"></img>
 </p>
 
 In this work both geometrical features (euclidean distance transform and time of flight) and operating conditions (pressure/diffusion coefficient) are employed as input to the network. 
