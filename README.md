@@ -1,14 +1,11 @@
 # Prediction of local concentration fields in porous media with chemical reaction using a multi scale convolutional neural network
 
-Fork of Javier Santos' [MS-Ne]t(https://github.com/je-santos/ms_net), modified for use in the prediction of scalar fields in porous reactive systems.
+Fork of Javier Santos' [MS-Net](https://github.com/je-santos/ms_net), modified for use in the prediction of scalar fields in porous reactive systems.
 
 <p align="center">
 <img src="./images/fig1.png" width="500px"></img>
 </p>
 Implementation of <a href="https://link.springer.com/article/10.1007/s11242-021-01617-y">The MS-Net</a> in Pytorch. This model provides an easy and effcient way to train neural networks with computationally large 3D arrays. The application shown in the paper considered simulations of flow through porous materials, but the method is general, and should be applicable to any other application involving large 2D/3D arrays.
-
-## Small example
-An example (for electrical conductivity) can be found in this <a href="https://colab.research.google.com/drive/1R-bMTYuNfhFNNnpIWecNa0lPWUCDRa_w?usp=sharing">Google Colab</a>
 
 
 ## Usage
@@ -39,11 +36,9 @@ The following illustration shows how the information flows through the individua
 <img src="./images/flowchart.png" width="750px"></img>
 </p>
 
-## Video
-A high-level talk describing the MS-Net highlights is posted on [youtube](https://www.youtube.com/watch?v=DCXSdEDJE0E)
-
 ## Citation
-If you use our code for your own research, we would be grateful if you cite our publication
+If you use our code for your own research, we would be grateful if you cite our publications
+[CEJ](https://www.sciencedirect.com/science/article/pii/S1385894722058478)
 [TiPM](https://link.springer.com/article/10.1007/s11242-021-01617-y)
 ```
 @article{MSNET,
