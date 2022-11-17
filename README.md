@@ -1,4 +1,7 @@
 # MS-Net: Computationally Efficient Multiscale Neural Network 
+
+Fork of Javier Santos' MS-Net, modified for use in the prediction of scalar fields in porous reactive systems.
+
 <p align="center">
 <img src="./images/fig1.png" width="500px"></img>
 </p>
