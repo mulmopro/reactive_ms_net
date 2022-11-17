@@ -37,8 +37,19 @@ The following illustration shows how the information flows through the individua
 </p>
 
 ## Citation
-If you use our code for your own research, we would be grateful if you cite our publications
+If you use our code for your own research, we would be grateful if you cite our publications:
+
 [CEJ](https://www.sciencedirect.com/science/article/pii/S1385894722058478)
+```
+@article{reactiveMSNET,
+title = "Prediction of local concentration fields in porous media with chemical reaction using a multi scale convolutional neural network",
+journal = "Chem Eng J",
+year = "2022",
+issn = "140367",
+doi = "https://doi.org/10.1016/j.cej.2022.140367",
+url = "https://www.sciencedirect.com/science/article/pii/S1385894722058478"
+}
+```
 [TiPM](https://link.springer.com/article/10.1007/s11242-021-01617-y)
 ```
 @article{MSNET,
