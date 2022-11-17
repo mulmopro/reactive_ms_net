@@ -5,8 +5,22 @@ Fork of Javier Santos' [MS-Net](https://github.com/je-santos/ms_net), modified f
 <p align="center">
 <img src="./images/ga.png" width="500px"></img>
 </p>
-Implementation of <a href="https://link.springer.com/article/10.1007/s11242-021-01617-y">The MS-Net</a> in Pytorch. This model provides an easy and effcient way to train neural networks with computationally large 3D arrays. The application shown in the paper considered simulations of flow through porous materials, but the method is general, and should be applicable to any other application involving large 2D/3D arrays.
 
+In this repository we share the code of MSNet employed in our work published on the [Chemical Engineering Journal](https://www.sciencedirect.com/science/article/pii/S1385894722058478). The network has been trained to predict the concentration fields of a reactive species in 2D porous media. The trained network can generalize on new geometries and operating conditions (Reynolds and Péclet numbers).
+
+## Workflow
+The following illustration shows how the information flows through the individual networks (left).
+MSNet has been trained on a dataset of CFD simulations (right).
+
+<p align="center">
+<img src="./images/MSNET_workflow.png" width="750px"></img>
+</p>
+
+In this work both geometrical features (euclidean distance transform and time of flight) and operating conditions (pressure/diffusion coefficient) are employed as input to the network. 
+
+## Dataset availablity
+
+Data available here
 
 ## Usage
 
@@ -29,12 +43,7 @@ masks = get_masks( x[-1],    scales = num_scales )
 y     = net( x, masks )[-1] # final prediction
 ```
 
-## Workflow
-The following illustration shows how the information flows through the individual networks.
 
-<p align="center">
-<img src="./images/flowchart.png" width="750px"></img>
-</p>
 
 ## Citation
 If you use our code for your own research, we would be grateful if you cite our publications:
