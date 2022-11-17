@@ -41,9 +41,9 @@ net = MS_Net(
 
 file_name = 'sample_x'
 
-x_edist = load_samples( feat='edist', sample_name = file_name, scales=num_scales)
-x_tof   = load_samples( feat='tof', sample_name = file_name, scales=num_scales)
-x_p_D   = load_samples( feat='p/D', sample_name = file_name, scales=num_scales)
+x_edist = load_samples( feat='edist', sample_name = file_name, scales = num_scales)
+x_tof   = load_samples( feat='tof', sample_name = file_name, scales = num_scales)
+x_p_D   = load_samples( feat='p/D', sample_name = file_name, scales = num_scales)
 
 x = concat_features(feats = [x_edist, x_tof, x_p_D])
 masks = get_masks( x_edist[-1],    scales = num_scales )
