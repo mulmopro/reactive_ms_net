@@ -6,11 +6,11 @@ Fork of Javier Santos' [MS-Net](https://github.com/je-santos/ms_net), modified f
 <img src="./images/ga.png" width="500px"></img>
 </p>
 
-In this repository we share the code of MSNet employed in our work published on the [Chemical Engineering Journal](https://www.sciencedirect.com/science/article/pii/S1385894722058478). The network has been trained to predict the concentration fields of a reactive species in 2D porous media. The trained network can generalize on new geometries and operating conditions (Reynolds and Péclet numbers).
+In this repository we share the Pytorch code of MSNet employed for our article published in the [Chemical Engineering Journal](https://www.sciencedirect.com/science/article/pii/S1385894722058478). The network has been trained to predict the concentration fields of a reactive species in 2D porous media. The trained network can generalize on new geometries and operating conditions (Reynolds and Péclet numbers).
 
 ## Workflow
 The following illustration shows how the information flows through the individual networks (left).
-MSNet has been trained on a dataset of CFD simulations (right).
+MSNet has been trained on a dataset of CFD simulations of reactive transport (right).
 
 <p align="center">
 <img src="./images/MSNET_workflow.jpg" width="750px"></img>
@@ -28,18 +28,25 @@ Data available here
 import torch
 
 from network import MS_Net
-from pore_utils import rnd_array
+from pore_utils import load_samples, concat_features
 from network_tools import get_masks
 
+
 net = MS_Net( 
-              num_scales   := 4,   # num of trainable convNets
-              num_features  = 1,   # input features (Euclidean distance, etc)
+              num_scales    := 6,  # num of trainable convNets
+              num_features  = 3,   # input features (Euclidean distance, time of flight, operating conditions)
               num_filters   = 2,   # num of kernels on each layer of the finest model (most expensive)
               summary       = True # print the model summary
 )
 
-x     = rnd_array( size=128, scales = num_scales )
-masks = get_masks( x[-1],    scales = num_scales )
+file_name = 'sample_x'
+
+x_edist = load_samples( feat='edist', sample_name = file_name, scales=num_scales)
+x_tof   = load_samples( feat='tof', sample_name = file_name, scales=num_scales)
+x_p_D   = load_samples( feat='p/D', sample_name = file_name, scales=num_scales)
+
+x = concat_features(feats = [x_edist, x_tof, x_p_D])
+masks = get_masks( x_edist[-1],    scales = num_scales )
 y     = net( x, masks )[-1] # final prediction
 ```
 
