@@ -1,4 +1,4 @@
-# MS-Net: Computationally Efficient Multiscale Neural Network 
+# Prediction of local concentration fields in porous media with chemical reaction using a multi scale convolutional neural network
 
 Fork of Javier Santos' MS-Net, modified for use in the prediction of scalar fields in porous reactive systems.
 
