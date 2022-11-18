@@ -3,16 +3,20 @@ import numpy as np
 import torch
 
 from network_tools import scale_tensor
+import skfmm
+
+import numpy as np
+from scipy.ndimage.morphology import distance_transform_edt as edist
 
 
 def get_coarsened_list(x, scales):
     """
-    X : 3D np array
+    X : 2D np array
     returns a list with the desired number of coarse-grained tensors
     """
     
     # converts to tensor and adds channel and batch dim
-    x = torch.Tensor(add_dims(x, 1))
+    x = torch.Tensor(add_dims(add_dims(x, 1),1))
     
     ds_x = []
     ds_x.append(x)
@@ -21,9 +25,59 @@ def get_coarsened_list(x, scales):
         ds_x.append( scale_tensor( ds_x[-1], scale_factor=1/2 ) )
     return ds_x[::-1] # returns the reversed list (small images first)
 
+def load_samples(feat, sample_name, scales, p=None, xform = None, path='.'):
+    """
+    feat: either mpf, edist or uz
+    sample_name: sample num
+    xform: data transform to perform
+    """
+    
+    if feat == 'T':
+        sample = np.load(f'{path}/{sample_name}.npy')
+
+        
+    elif feat == 'edist':
+        sample = np.load(f'{path}/{sample_name}.npy')
+        sample[sample!=0] = 1.
+        sample = np.concatenate((sample,sample,sample),axis=1)
+        sample = edist(sample)    
+        sample = np.split(sample,3,axis=1)[1]  
+        sample[sample==0] = 0.0
 
 
+    elif feat == 'tof':
+        sample = np.load(f'{path}/{sample_name}.npy')
+        sample[sample!=0] = 1.
+        #sample = np.concatenate((sample,sample,sample),axis=1)
+        sample = edist(sample)    
+        sample[sample==0]=0.0
+        start = np.zeros(sample.shape)
+        start[0,:]=1.0
+        start[1,:]=1.0
+        start=start*2.0-1.0
+        sample=sample*1.0
+        sample=skfmm.travel_time(start,sample)
+        sample = np.split(sample,3,axis=1)[1]  
+        sample = sample.max()-sample
+        
+        
+    elif feat == 'p/D':
+        sample = np.load(f'{path}/{sample_name}.npy')
+        sample = np.where(sample != 0, p, sample)
 
+    elif feat == 'D':
+        sample = np.load(f'{path}/{sample_name}.npy')
+        sample = np.where(sample != 0, D, sample)
+
+    else:
+        raise NameError('Wrong feature name or not implemented')
+        
+    sample_list = get_coarsened_list(sample,scales)
+    return sample_list
+
+def concat_features(feats):
+    x =[torch.cat(feats,axis=1) for feats in zip(*feats)]
+    return x
 """
 Tensor operations
 """
