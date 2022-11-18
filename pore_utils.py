@@ -25,7 +25,7 @@ def get_coarsened_list(x, scales):
         ds_x.append( scale_tensor( ds_x[-1], scale_factor=1/2 ) )
     return ds_x[::-1] # returns the reversed list (small images first)
 
-def load_samples(feat, sample_name, scales, p=None, xform = None, path='.'):
+def load_samples(feat, sample_name, scales, p_D=None, xform = None, path='.'):
     """
     feat: either mpf, edist or uz
     sample_name: sample num
@@ -63,7 +63,7 @@ def load_samples(feat, sample_name, scales, p=None, xform = None, path='.'):
         
     elif feat == 'p/D':
         sample = np.load(f'{path}/{sample_name}.npy')
-        sample = np.where(sample != 0, p, sample)
+        sample = np.where(sample != 0, p_D, sample)
 
     elif feat == 'D':
         sample = np.load(f'{path}/{sample_name}.npy')
