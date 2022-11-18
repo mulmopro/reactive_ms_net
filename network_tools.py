@@ -42,11 +42,11 @@ def scale_tensor(x, scale_factor=1, mode='nearest'):
     
     if mode == 'nearest':
         if scale_factor<1:
-            return nn.AvgPool3d(kernel_size = int(1/scale_factor))(x)
+            return nn.AvgPool2d(kernel_size = int(1/scale_factor))(x)
         
         elif scale_factor>1:
             for repeat in range (0, int(np.log2(scale_factor)) ):  #number of repeatsx2
-                for ax in range(2,5):
+                for ax in range(2,4):
                     x=x.repeat_interleave(repeats=2, axis=ax)
             return x
         
@@ -60,7 +60,7 @@ def scale_tensor(x, scale_factor=1, mode='nearest'):
 
 def get_masks(x, scales):
     """
-    x: euclidean distance 3D array at the finest scale
+    x: euclidean distance 2D array at the finest scale
     Returns array with masks
     
     Notes:
@@ -73,11 +73,12 @@ def get_masks(x, scales):
     masks[0]  = pooled[0].squeeze(0)
     
     for scale in range(1,scales):
-        pooled[scale] = nn.AvgPool3d(kernel_size = 2)(pooled[scale-1])
+        pooled[scale] = nn.AvgPool2d(kernel_size = 2)(pooled[scale-1])
         denom = pooled[scale].clone()   # calculate the denominator for the mask
         denom[denom==0] = 1e8  # regularize to avoid divide by zero
-        for ax in range(2,5):   # repeat along 3 axis
+        for ax in range(2,4):   # repeat along 3 axis
             denom=denom.repeat_interleave( repeats=2, axis=ax )
         masks[ scale ] = torch.div( pooled[scale-1], denom ).squeeze(0)
     return masks[::-1] # returns a list with masks. smallest size first
+        
         
