@@ -58,24 +58,26 @@ If you use our code for your own research, we would be grateful if you cite our 
 
 [CEJ](https://www.sciencedirect.com/science/article/pii/S1385894722058478)
 ```
-@article{reactiveMSNET,
-title = "Prediction of local concentration fields in porous media with chemical reaction using a multi scale convolutional neural network",
-journal = "Chem Eng J",
-year = "2022",
-issn = "140367",
-doi = "https://doi.org/10.1016/j.cej.2022.140367",
-url = "https://www.sciencedirect.com/science/article/pii/S1385894722058478"
+@article{reactive-msnet,
+  title={Prediction of local concentration fields in porous media with chemical reaction using a multi scale convolutional neural network},
+  author={Marcato, Agnese and Santos, Javier E and Boccardo, Gianluca and Viswanathan, Hari and Marchisio, Daniele and Prodanovi{\'c}, Ma{\v{s}}a},
+  journal={Chemical Engineering Journal},
+  pages={140367},
+  year={2022},
+  publisher={Elsevier}
 }
 ```
 [TiPM](https://link.springer.com/article/10.1007/s11242-021-01617-y)
 ```
-@article{MSNET,
-title = "Computationally Efficient Multiscale Neural Networks Applied to Fluid Flow in Complex 3D Porous Media",
-journal = " Transp Porous Med",
-year = "2021",
-issn = "1573-1634",
-doi = "https://doi.org/10.1007/s11242-021-01617-y",
-url = "https://link.springer.com/article/10.1007/s11242-021-01617-y"
+@article{msnet,
+  title={Computationally efficient multiscale neural networks applied to fluid flow in complex 3D porous media},
+  author={Santos, Javier E and Yin, Ying and Jo, Honggeun and Pan, Wen and Kang, Qinjun and Viswanathan, Hari S and Prodanovi{\'c}, Ma{\v{s}}a and Pyrcz, Michael J and Lubbers, Nicholas},
+  journal={Transport in porous media},
+  volume={140},
+  number={1},
+  pages={241--272},
+  year={2021},
+  publisher={Springer}
 }
 ```
 
