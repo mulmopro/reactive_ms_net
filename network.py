@@ -52,7 +52,7 @@ class get_model(nn.Module):
         num_layers = 5   # number of conv layers
         
         # first block
-        self.head = ConvBlock3D( in_channel  = nc_in,
+        self.head = ConvBlock2d( in_channel  = nc_in,
                                  out_channel = ncf,
                                  ker_size    = ker_size,
                                  padd        = padd_size,
@@ -65,7 +65,7 @@ class get_model(nn.Module):
             new_ncf = int( ncf/2**(i+1) )
             if i==num_layers-2: norm=False  # no norm in the penultimate block
           
-            convblock = ConvBlock3D( in_channel  = max(2*new_ncf,ncf_min),
+            convblock = ConvBlock2d( in_channel  = max(2*new_ncf,ncf_min),
                                      out_channel = max(new_ncf,ncf_min),
                                      ker_size    = ker_size,
                                      padd        = padd_size,
@@ -76,13 +76,13 @@ class get_model(nn.Module):
         
         if last_act == 'CELU':
             self.tail = nn.Sequential(
-                                    nn.Conv3d( max(new_ncf,ncf_min), nc_out,
+                                    nn.Conv2d( max(new_ncf,ncf_min), nc_out,
                                                kernel_size=1,stride=1, padding=0),
                                     nn.CELU()
                                  )
         else:
             self.tail = nn.Sequential(
-                            nn.Conv3d( max(new_ncf,ncf_min), nc_out, kernel_size=1,
+                            nn.Conv2d( max(new_ncf,ncf_min), nc_out, kernel_size=1,
                                        stride=1, padding=0)) # no pad needed since 1x1x1
             
     def forward(self,x):
@@ -94,17 +94,18 @@ class get_model(nn.Module):
 
 
 
-class ConvBlock3D( nn.Sequential ):
+class ConvBlock2d( nn.Sequential ):
     def __init__(self, in_channel, out_channel, ker_size, padd, stride, norm):
-        super(ConvBlock3D,self).__init__()
+        super(ConvBlock2d,self).__init__()
         self.add_module( 'conv',
-                         nn.Conv3d( in_channel, 
+                         nn.Conv2d( in_channel, 
                                     out_channel,
                                     kernel_size=ker_size,
                                     stride=stride,
-                                    padding=padd ) ),
+                                    padding=padd ,
+                                    padding_mode = 'circular') ),
         if norm == True:
-            self.add_module( 'i_norm', nn.InstanceNorm3d( out_channel ) ),
+            self.add_module( 'i_norm', nn.InstanceNorm2d( out_channel ) ),
         self.add_module( 'CeLU', nn.CELU( inplace=False ) )
         
         
@@ -114,7 +115,7 @@ class MS_Net(nn.Module):
     def __init__(
                  self, 
                  net_name     = 'test1', 
-                 num_scales   =  4,
+                 num_scales   =  6,
                  num_features =  1, 
                  num_filters  =  2, 
                  f_mult       =  4,  
@@ -149,8 +150,11 @@ class MS_Net(nn.Module):
         # Carry-out the first prediction (pass through the coarsest model)
         y = [ self.models[0]( x_list[0] ) ]
         for scale,[ model,x ] in enumerate(zip( self.models[1:],x_list[1:] )):
+            print(scale)
             y_up = scale_tensor( y[scale], scale_factor=2 )*masks[scale]
             y.append( model( torch.cat((x,y_up),dim=1) ) + y_up )
+        y[-1] = (y[-1] - y[-1].min())/(y[-1].max()-y[-1].min())
+        y[-1] = y[-1]*masks[scale+1] # multiply by the binary mask
         return y
         
         
